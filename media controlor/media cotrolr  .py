@@ -56,8 +56,8 @@ def finger_posation(image,results,hand_number=0):
 
         for id,cordinaties in enumerate(my_hand.landmark):
 
-            h,w,ch=image.shape
-            # Convert normalized coordinates to pixels
+            h,w, ch=image.shape
+           # Convert normalized coordinates to pixels
             cx,cy=int(cordinaties.x*w),int(cordinaties.y*h)
 
              # Append the landmark to the list
