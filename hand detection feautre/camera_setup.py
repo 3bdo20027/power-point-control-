@@ -1,7 +1,6 @@
 import cv2
 
 
-
 def get_capture():
 
     cap=cv2.VideoCapture(0)
@@ -9,12 +8,13 @@ def get_capture():
     return cap
 
 
+#get frame and return it in RGB frame
 
 def get_farme(cap):
 
     sucsess,frame=cap.read()  #read frames
 
-    if not sucsess:
+    if not sucsess: 
 
         return print('Camera Not Found')
 

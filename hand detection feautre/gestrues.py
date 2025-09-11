@@ -5,34 +5,32 @@ import numpy as np
 import cv2
 from pynput.mouse import Button,Controller
 
+
+
+
 state=None
+gestrue=None 
 
+mouse=Controller() #to click left on mouse and move mouse
 
-mouse=Controller()
-
-#for delay
+#for delay and increase process 
 last_action_time=0
 delay=0
 
-#laser
-laser_check=False
 
+#paramiters for move mouse by aytopy or pynput library
 smothing=7
-
 frame_r=100
+pre_x,pre_y=0,0 #last postion of mouse 
+c_x,c_y=0,0 #current posation of mouse
 
-gestrue=None
-
-
-
-pre_x,pre_y=0,0
-
-c_x,c_y=0,0
-
+#parmiters for check states of gestrues
+laser_check=False
 draw_check=False
 is_drawing=False
 erase_check=False
 
+#get screen width and hight
 screen_w,screen_h=pyautogui.size()
 
 def gestrue_recognization(lm_list,fingurs_up,frame):
@@ -42,6 +40,8 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
     h,w,ch=frame.shape
     
+    #use [0,1,1,1,1] mean all fingures up expect thump is down
+     
     if state=='slide show'   and laser_check==False and draw_check==False and erase_check==False:
       
 
@@ -74,7 +74,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
    
 
-
+     #logic of next slide gestrue
     
     if fingurs_up==[0,1,0,0,0] and state=='slide show' and laser_check==False and draw_check==False:
 
@@ -87,6 +87,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
 
 
+     #logic of next pervious gestrue
      
     elif fingurs_up==[0,1,1,0,0] and state=='slide show' and laser_check==False and draw_check==False:
 
@@ -98,11 +99,13 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
             gestrue='privous slide'
 
 
-        
+     #logic of start laser gestrue
+    
     if fingurs_up==[1,1,0,0,0] and draw_check==False and state=='slide show' and erase_check==False:
-            #draw rectangle about region for laserdetection
-
+            
+            #draw rectangle about region for laser detection
             cv2.rectangle(frame, (frame_r, frame_r), (w - frame_r, h - frame_r),(255, 0, 255), 2)
+            
             if not laser_check:
 
             
@@ -117,24 +120,27 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
             screen_w,screen_h=autopy.screen.size()
 
 
-
+            #convert x,y cordianits of frame camera to x,y for screen
+            #من الاخر بيحول الاحدثيات بتاعت الكاميرا الاحثيات ممازويه للحجم الشاشه بتاعتي عشان لما احرك الماوس
             x=np.interp(lm_list[8][1],(frame_r,w-frame_r),(0,screen_w))
             y=np.interp(lm_list[8][2],(frame_r,h-frame_r),(0,screen_h))
 
-            #clamp x,y
+            #clamp x,y if get error say out of bounds
 
-            #x=np.clip(x,3,screen_w-10)
+            #x=np.clip(x,3,screen_w-10) 
             #y=np.clip(y,3,screen_h-10)
 
+            
+            c_x=pre_x+(x-pre_x)/smothing
+            c_y=pre_y+(y-pre_y)/smothing
 
-            c_x=pre_x+(x-pre_x)/5
-            c_y=pre_y+(y-pre_y)/5
-
-            #autopy.mouse.move(c_x,c_y)
+            #autopy.mouse.move(c_x,c_y) 
 
             mouse.position=(c_x,c_y)
             cv2.circle(frame, (lm_list[8][1], lm_list[8][2]), 13, (255, 255, 0), cv2.FILLED)
             pre_x,pre_y=c_x,c_y
+    
+    #logic of End laser mode
     elif fingurs_up==[1,1,1,1,1] and laser_check:
         
         
@@ -147,11 +153,11 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
 
     #------------------------------------------------------------------>
-    #drawing
-
+    
+    #logic of statr drawing mode 
 
     if fingurs_up==[0,1,1,1,0] and laser_check==False and state=='slide show' and erase_check==False:
-            #draw rectangle about region for laserdetection
+            #draw rectangle about region of drawing 
 
             cv2.rectangle(frame, (frame_r, frame_r), (w - frame_r, h - frame_r),(255, 0, 255), 2)
             if not draw_check:
@@ -167,7 +173,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
             screen_w,screen_h=autopy.screen.size()
 
 
-
+            #mouse posations
             x=np.interp(lm_list[12][1],(frame_r,w-frame_r),(0,screen_w))
             y=np.interp(lm_list[12][2],(frame_r,h-frame_r),(0,screen_h))
 
@@ -186,15 +192,20 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
                  
 
             #autopy.mouse.move(c_x,c_y)
-            mouse.position=(c_x,c_y)
             
-            mouse.press(Button.left)
+            mouse.position=(c_x,c_y)
+
+            
+            mouse.press(Button.left) #click left on mouse
 
 
-          
+            #draw circle on fingure tip          
             cv2.circle(frame, (lm_list[12][1], lm_list[12][2]), 13, (255, 255, 0), cv2.FILLED)
+           
             pre_x,pre_y=c_x,c_y
 
+   
+     #logic to end drawing mode
     if fingurs_up==[1,1,1,1,1] and draw_check and erase_check==False and laser_check==False:
          
         draw_check=False
@@ -203,6 +214,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
         print('stop drawing')
         gestrue='stop drawing'
 
+    #logic to statr use erse      
     elif fingurs_up==[1,1,0,0,1] and draw_check==False and not erase_check and laser_check==False:
         
         
@@ -225,7 +237,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
        
 
 
-            #x,y postions from camera to screen 
+        #x,y postions from camera to screen 
         screen_w,screen_h=autopy.screen.size()
 
 
@@ -261,7 +273,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
             cv2.circle(frame, (lm_list[8][1], lm_list[8][2]), 13, (255, 255, 0), cv2.FILLED)
             pre_x,pre_y=c_x,c_y
 
-       
+    #logic of end useing erse  
     if fingurs_up==[0,0,0,0,0] and erase_check:
             
             print('stop  erase')

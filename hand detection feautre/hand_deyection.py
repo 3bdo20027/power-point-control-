@@ -89,6 +89,8 @@ def finger_posation(image,results,hand_number=0):
     return land_marks_list,hand_lable
 
 
+#function return list containe figures state UP or DOWN
+
 def fingures_state(lmlist,hand_lable,tips=[4,8,12,16,20]):
 
 
@@ -104,7 +106,7 @@ def fingures_state(lmlist,hand_lable,tips=[4,8,12,16,20]):
         else:
             fingures_up_list[finger]=0 #fingure is down
 
-    
+    #for thump fingure
     if hand_lable=='Right': 
         #compare between distance for tip and Mcp at x-axis
         if lmlist[tips[0]][1] < lmlist[tips[0]-2][1]:

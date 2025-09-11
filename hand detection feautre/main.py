@@ -5,24 +5,21 @@ import pyautogui
 import time
 import autopy
 import numpy as np
+import cv2
+
+
+
 
 last_action_time=0
-
-
-laser_on=False
-smothing=7
 gestrue=None
 
-frame_r=100
 
 
 
-pre_x,pre_y=0,0
 
-c_x,c_y=0,0
 
-screen_w,screen_h=pyautogui.size()
-import cv2
+
+
 
 def main():
     cap=get_capture()
@@ -53,36 +50,6 @@ def main():
 
             gestrue=gestrue_recognization(lm_list=lm_list,fingurs_up=fiengures,frame=frame)
            
-            '''          
-            
-        
-             
-            if fiengures==[0,1,1,1,0]:
-               #draw rectangle about region for laserdetection
-
-                cv2.rectangle(frame, (frame_r, frame_r), (w - frame_r, h - frame_r),(255, 0, 255), 2)
-                #pyautogui.hotkey('ctrl','l')
-
-                #x,y postions from camera to screen 
-
-                scale=autopy.screen.scale()
-                screen_w,screen_h=autopy.screen.size()
-
-
-                x=np.interp(lm_list[12][1],(frame_r,w-frame_r),(0,screen_w))
-                y=np.interp(lm_list[12][2],(frame_r,h-frame_r),(0,screen_h))
-
-                #x=max(1,min(x,screen_w-1))
-                #y=max(1,min(y,screen_h-1))
-
-
-                c_x=pre_x+(x-pre_x)/smothing
-                c_y=pre_y+(y-pre_y)/smothing
-
-                autopy.mouse.move(c_x,c_y)
-                cv2.circle(frame, (lm_list[12][1], lm_list[12][2]), 13, (255, 255, 0), cv2.FILLED)
-                pre_x,pre_y=c_x,c_y'''
-
 
 
 
@@ -93,7 +60,7 @@ def main():
 
 
 
-         #calc FPS
+         #calc FPS (frame for second)
         global last_action_time
         current_time=time.time()
         fps=1/(current_time-last_action_time)
