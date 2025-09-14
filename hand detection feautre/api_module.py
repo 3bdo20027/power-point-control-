@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from ppt_Control import next_slide, previous_slide, start_laser, click, draw_mode, erase_drawing, stop_drawing
-from gestures import open_ppt
+from gestrues import open_ppt,next_slide, previous_slide, start_laser, click, draw_mode, erase_drawing, stop_drawing
 import os
 
 app = FastAPI()
