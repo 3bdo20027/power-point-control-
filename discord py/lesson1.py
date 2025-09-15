@@ -17,8 +17,6 @@ class client(discord.Client):
         
         if message.content.startswith('hellow'):
             await message.channel.send(f'Hi there {message.author}')
-        
-    
 
 
 

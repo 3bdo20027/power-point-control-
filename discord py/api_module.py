@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from gestures import open_ppt,next_slide, previous_slide, start_laser, click, draw_mode, erase_drawing, stop_drawing
 import os
-import pyautogui
+import pyautogui 
 
 app = FastAPI()
 
@@ -20,19 +20,20 @@ def root():
     return {"Hello": "PPT Gesture Control API"}
 
 
-
+'''
 @app.post("/ppt/open")
 def open_presentation(file: PPTFile):
     if not os.path.exists(file.path):
         raise HTTPException(status_code=404, detail="PPT file not found")
     open_ppt(file.path)
-    return {"message": f"Presentation {file.path} opened"}
+    return {"message": f"Presentation {file.path} opened"}'''
 
 
 
 @app.post("/ppt/next")
 def api_next_slide():
-    next_slide()
+
+    pyautogui.press('right')
     return {"message": "Moved to next slide"}
 
 @app.post("/ppt/prev")

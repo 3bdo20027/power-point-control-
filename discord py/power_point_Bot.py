@@ -58,7 +58,7 @@ async def control(interactions:discord.Interaction):
     await interactions.response.send_message('the buttons displayed',view=view())
 
 
-my_client.start('MTQxNjY1MDE3MjY2MTc2NDEwOA.G20Xuh.LhXqMFG5pGKGfSQ2LyfmYBwPH25EFtieJunbf0')
+my_client.run('MTQxNjY1MDE3MjY2MTc2NDEwOA.G20Xuh.LhXqMFG5pGKGfSQ2LyfmYBwPH25EFtieJunbf0')
 
 
 
