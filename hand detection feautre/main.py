@@ -6,6 +6,8 @@ import time
 import autopy
 import numpy as np
 import cv2
+import os
+from get_path import pick_file
 
 
 
@@ -13,6 +15,12 @@ import cv2
 last_action_time=0
 gestrue=None
 
+
+#first choise file 
+
+path=pick_file()
+
+os.startfile(path)
 
 
 

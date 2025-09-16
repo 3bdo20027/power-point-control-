@@ -121,7 +121,7 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
 
             #convert x,y cordianits of frame camera to x,y for screen
-            #من الاخر بيحول الاحدثيات بتاعت الكاميرا الاحثيات ممازويه للحجم الشاشه بتاعتي عشان لما احرك الماوس
+            
             x=np.interp(lm_list[8][1],(frame_r,w-frame_r),(0,screen_w))
             y=np.interp(lm_list[8][2],(frame_r,h-frame_r),(0,screen_h))
 
@@ -295,71 +295,10 @@ def gestrue_recognization(lm_list,fingurs_up,frame):
 
     return gestrue
 
-     #------------------------------------------------------------------>
-    #erase
-'''
-
-    if fingurs_up==[1,1,1,1,1] and laser_check==False and state=='slide show':
-            #draw rectangle about region for laserdetection
-
-            cv2.rectangle(frame, (frame_r, frame_r), (w - frame_r, h - frame_r),(255, 0, 255), 2)
-            if not erase_check:
-
-            
-                pyautogui.hotkey('ctrl','e')
-                erase_check=True
-                print('start erase')
-
-
-            #x,y postions from camera to screen 
-            screen_w,screen_h=autopy.screen.size()
-
-
-
-            x=np.interp(lm_list[16][1],(frame_r,w-frame_r),(0,screen_w))
-            y=np.interp(lm_list[16][2],(frame_r,h-frame_r),(0,screen_h))
-
-            #clamp x,y
-
-            #x=np.clip(x,3,screen_w-10)
-            #y=np.clip(y,3,screen_h-10)
-
-
-            c_x=pre_x+(x-pre_x)/smothing
-            c_y=pre_y+(y-pre_y)/smothing
-
-            
-                
-                 
-                 
-
-            #autopy.mouse.move(c_x,c_y)
-            mouse.position=(c_x,c_y)
-            
-            mouse.press(Button.left)
-
-
-          
-            cv2.circle(frame, (lm_list[16][1], lm_list[16][2]), 13, (255, 255, 0), cv2.FILLED)
-            pre_x,pre_y=c_x,c_y
-    elif fingurs_up==[0,0,0,0,0] and erase_check:
-        
-        
-        mouse.release(Button.left)
-        erase_check=False
-
-        
-
-
-        
-          
-        pyautogui.hotkey('ctrl','a')
-        print('stop erse')
-
     
     
     
-'''
+
 
 
          
