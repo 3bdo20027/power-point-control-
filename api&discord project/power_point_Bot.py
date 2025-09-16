@@ -219,7 +219,7 @@ async def control(interactions:discord.Interaction):
     await interactions.response.send_message('the buttons displayed',view=view())
 
 
-my_client.run("MTQxNjY1MDE3MjY2MTc2NDEwOA.GfEQ0a.db8Dw0Oph4C-Kyq6x4j_EcdV7SD6cehIqbcN1k")
+my_client.run("MTQxNjY1MDE3MjY2MTc2NDEwOA.GUCfF1.gbYOBeG92TuNqn6i__fwUgoANn6ztcdGdIGCms")
 
 
 
